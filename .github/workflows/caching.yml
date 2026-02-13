@@ -1,0 +1,24 @@
+name: Cache Task
+on: [push, workflow_dispatch]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Cache
+        id: my-cache
+        uses: actions/cache@v3
+        with:
+          path: dummy-cache
+          key: cache-9958c9b
+
+      - name: Generate Dummy
+        if: steps.my-cache.outputs.cache-hit != 'true'
+        run: |
+          mkdir -p dummy-cache
+          echo "cached" > dummy-cache/file.txt
+
+      - name: prime-cache-9958c9b
+        run: echo "Hit: ${{ steps.my-cache.outputs.cache-hit }}"
