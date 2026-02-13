@@ -15,14 +15,12 @@ jobs:
           path: dummy-cache-folder
           key: cache-9958c9b
 
-      # 2. Create dummy content if cache doesn't exist yet
       - name: Generate Dummy Content
         if: steps.my-cache.outputs.cache-hit != 'true'
         run: |
           mkdir -p dummy-cache-folder
           echo "This is cached content" > dummy-cache-folder/data.txt
 
-      # 3. THIS IS THE REQUIRED STEP NAME
       - name: prime-cache-9958c9b
-        id: prime-cache-9958c9b
+        id: step-prime-cache-9958c9b
         run: echo "Cache hit status is ${{ steps.my-cache.outputs.cache-hit }}"
