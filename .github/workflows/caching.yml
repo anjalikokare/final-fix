@@ -2,23 +2,26 @@ name: Cache Task
 on: [push, workflow_dispatch]
 
 jobs:
-  build:
+  cache-job:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
+      # 1. Setup the cache with the specific key required
       - name: Setup Cache
         id: my-cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
-          path: dummy-cache
+          path: dummy-cache-folder
           key: cache-9958c9b
 
-      - name: Generate Dummy
+      # 2. Create dummy content if cache doesn't exist yet
+      - name: Generate Dummy Content
         if: steps.my-cache.outputs.cache-hit != 'true'
         run: |
-          mkdir -p dummy-cache
-          echo "cached" > dummy-cache/file.txt
+          mkdir -p dummy-cache-folder
+          echo "This is cached content" > dummy-cache-folder/data.txt
 
+      # 3. THIS IS THE REQUIRED STEP NAME
       - name: prime-cache-9958c9b
-        run: echo "Hit: ${{ steps.my-cache.outputs.cache-hit }}"
+        run: echo "Cache hit status is ${{ steps.my-cache.outputs.cache-hit }}"
