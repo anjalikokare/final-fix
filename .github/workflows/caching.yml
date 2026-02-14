@@ -24,4 +24,5 @@ jobs:
 
       # 3. THIS IS THE REQUIRED STEP NAME
       - name: prime-cache-9958c9b
+        id: prime-cache-9958c9b
         run: echo "Cache hit status is ${{ steps.my-cache.outputs.cache-hit }}"
