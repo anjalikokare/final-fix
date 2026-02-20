@@ -1,0 +1,18 @@
+name: Cache Prime
+on: push
+jobs:
+  cache-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup dummy file
+        run: echo "dummy data for caching" > dummy.txt
+      - name: Cache dependencies
+        id: cache-step
+        uses: actions/cache@v4
+        with:
+          path: dummy.txt
+          key: cache-9958c9b
+      - name: prime-cache-9958c9b
+        run: echo "Cache status: ${{ steps.cache-step.outputs.cache-hit }}"
