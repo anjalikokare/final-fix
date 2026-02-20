@@ -1,18 +1,25 @@
-name: Cache Prime
-on: push
+name: TDS Caching Task
+on: [push, workflow_dispatch]
+
 jobs:
-  cache-job:
+  cache-prime:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
-      - name: Setup dummy file
-        run: echo "dummy data for caching" > dummy.txt
-      - name: Cache dependencies
+
+      - name: Cache Prime Step
         id: cache-step
         uses: actions/cache@v4
         with:
-          path: dummy.txt
+          path: data.txt
           key: cache-9958c9b
+
       - name: prime-cache-9958c9b
-        run: echo "Cache status: ${{ steps.cache-step.outputs.cache-hit }}"
+        id: prime-cache-9958c9b
+        run: |
+          echo "Cache Hit: ${{ steps.cache-step.outputs.cache-hit }}"
+
+      - name: Create data if miss
+        if: steps.cache-step.outputs.cache-hit != 'true'
+        run: echo "content" > data.txt
